@@ -1,0 +1,3 @@
+
+echo rpcrequest(g:demodplugin_channel, "0:function:Greet", "nice")
+call rpcnotify(g:demodplugin_channel, "0:function:Greet", "nice")

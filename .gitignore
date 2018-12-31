@@ -1,0 +1,11 @@
+.dub
+docs.json
+__dummy.html
+docs/
+*.exe
+*.o
+*.obj
+*.lst
+demo-plugin
+nvimd-client
+libnvimhost.a

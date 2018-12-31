@@ -1,0 +1,13 @@
+{
+	"fileVersion": 1,
+	"versions": {
+		"docopt": "0.6.1-b.6",
+		"eventcore": "0.8.40",
+		"libasync": "0.8.3",
+		"memutils": "0.4.13",
+		"msgpack-d": "1.0.0-beta.7",
+		"stdx-allocator": "2.77.5",
+		"taggedalgebraic": "0.10.12",
+		"vibe-core": "1.4.6"
+	}
+}

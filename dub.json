@@ -1,0 +1,34 @@
+{
+    "name": "nvimhost",
+    "authors": [
+        "@viniarck",
+        "viniarck@gmail.com",
+        "Vinicius S. Arcanjo"
+    ],
+    "description": "Nvim (neovim) host provider and API client library.",
+    "copyright": "Copyright © 2018, Vinicius S. Arcanjo",
+    "license": "Apache",
+    "dependencies": {
+        "msgpack-d": "1.0.0-beta.7",
+        "vibe-core": "1.4.6"
+    },
+    "configurations": [
+        {
+            "name": "nvimhostlib",
+            "targetType": "library",
+            "targetName": "nvimhost"
+        },
+        {
+            "name": "nvimclient",
+            "targetType": "executable",
+            "mainSourceFile": "examples/nvim_client.d",
+            "targetName": "nvimd-client"
+        },
+        {
+            "name": "demoplugin",
+            "targetType": "executable",
+            "mainSourceFile": "examples/demo_plugin.d",
+            "targetName": "demo-plugin"
+        }
+    ]
+}

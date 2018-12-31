@@ -1,0 +1,66 @@
+module nvimhost.api;
+import nvimhost.client;
+import msgpack : ExtValue;
+// Auto generated
+
+alias Buffer = int;
+alias Window = int;
+alias Tabpage = int;
+
+class NvimAPI {
+
+private:
+
+    NvimClient client;
+
+public:
+
+    this(){
+        client = new NvimClient();
+    }
+
+    NvimClient getClient() {
+        return client;
+    }
+
+    void close() {
+       client.close();
+    }
+
+    bool exists(string varName) {
+        auto cmdOut = this.commandOutput("echo exists('" ~ varName ~ "')");
+        if (cmdOut == "1") {
+            return true;
+        }
+        return false;
+    }
+
+    auto getVarAs(T=string)(string varName) {
+        import std.conv;
+        auto cmdOut = this.commandOutput("echo " ~ varName);
+        return cmdOut.to!(T);
+    }
+
+    void eval(string expr) {
+
+        return client.call!(void)("nvim_eval", expr);
+
+    }
+
+    void evalAsync(string expr) {
+
+        return client.callAsync!(void)("nvim_eval", expr);
+
+    }
+    {% for func in functions%}
+    {{func.return}} {{func.f_name}}({% for arg in func.args %}{{arg.type}} {{arg.name}}{% if not loop.last %}, {% endif %}{% endfor %}) {
+        {% if func.is_async %}
+        client.callAsync!({{func.tmpl_arg}})("{{func.name}}"{% for arg in func.args %}, {{arg.name}}{% if not loop.last %} {% endif %}{% endfor %});
+        {% elif func.return == "void" %}
+        client.call!({{func.tmpl_arg}})("{{func.name}}"{% for arg in func.args %}, {{arg.name}}{% if not loop.last %} {% endif %}{% endfor %});
+        {% else %}
+        return client.call!({{func.tmpl_arg}})("{{func.name}}"{% for arg in func.args %}, {{arg.name}}{% if not loop.last %} {% endif %}{% endfor %});
+        {% endif %}
+    }
+    {% endfor %}
+}
