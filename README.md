@@ -8,7 +8,7 @@ The following snippets show how you can use this library, check out the [exaples
 
 ### Plugin snippet demo
 
-```
+```D
 import nvimhost.plugin;
 import nvimhost.api;
 
