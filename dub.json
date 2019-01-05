@@ -29,6 +29,12 @@
             "targetType": "executable",
             "mainSourceFile": "examples/demo_plugin.d",
             "targetName": "demo-plugin"
+        },
+        {
+            "name": "demoaltfile",
+            "targetType": "executable",
+            "mainSourceFile": "examples/altfile_plugin.d",
+            "targetName": "altfile-plugin"
         }
     ]
 }
