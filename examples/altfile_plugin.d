@@ -74,13 +74,13 @@ struct CppAltFile {
             }
 
             auto fName = fSplit[$ - 2] ~ altExtension;
-            auto dirIter = dirEntries(dir, "*" ~ altExtension ~ "*", SpanMode.breadth, false);
-            foreach (dirx; dirIter) {
-                if (ignoreHiddenDirs && dirx.isDir && dirx.name.indexOf(".") >= 0) {
+            auto dirIter = dirEntries(dir, "*" ~ altExtension ~ "*", SpanMode.breadth, true);
+            foreach (entry; dirIter) {
+                if (ignoreHiddenDirs && entry.isDir && entry.name.indexOf(".") >= 0) {
                     continue;
                 }
-                if (dirx.isFile && dirx.name.indexOf(fName) >= 0) {
-                    return dirx.name;
+                if (entry.isFile && entry.name.indexOf(fName) >= 0) {
+                    return entry.name;
                 }
             }
         }
