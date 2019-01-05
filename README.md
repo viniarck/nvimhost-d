@@ -1,6 +1,6 @@
 ## nvimhost-d
 
-Neovim (nvim) host provider and API client library written in [D](https://www.dlang.org).
+Neovim (nvim) host plugin provider and API client library written in [D](https://www.dlang.org).
 
 ## Docs
 
@@ -90,9 +90,9 @@ void main() {
 }
 ```
 
-## Install
+## How to install
 
-- Simply fetch it using `dub`. Whenever you import a module from the `nvimhost` package, it'll be built as a library by default.
+- Fetch it using `dub`, and use it as a library in your source code by importing the `nvimhost` package:
 
 ```
 dub fetch nvimhost
