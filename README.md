@@ -2,9 +2,11 @@
 
 Neovim (nvim) host plugin provider and API client library written in [D](https://www.dlang.org).
 
+![nvimhostd-logo](https://lh3.googleusercontent.com/JivbI2Qu3EtvQpl9pLNvn9jKTbv6i7Vmt313Ef0pKqWBf_nVofeYat9EArQ7WKKmYhGiHQvIAenre0yrBrlgZEq9xLcT754ZHCLxlZFPzheTn06WpkPRzxkbkRztQlPGYpF-aZzjglOhR_-3vMKHlnNlnt2Znb25Im0YRnrMOfD1hHX1sSj0WFGf8QW2oZ7-d3U4RdVEaOonigBzndNsD_sa9pUP2rrW38N3yZ0YB8L47x-lMoEsD6VBmyBjfxFG8GCz0WRW4qqS6p-P8yrOYI2ZksrQdHbqT3vC8-FNwWWgRfYvkP5Q_MPK-c2SdeaRR8vkbUSKw1ChmBcRXa8crDb93vYoT9s-rSb4y76n1-cXAKUIBGcueUglmkZ-5X-wQo9Ro9doDBjwBS4aegd9NeaCfguRkfBSc9f4MCQplpxzt-5p_qPQwdxbuOuHc1mT3HrcIiNZiOy15_PWEwWb4r0gRJoH0Yl63EAK1IiR4DF3lktC4yMuSgNWZ2ai_U4LQUJEJCPdtuET2AcVUC5KQmPLOrGU40D11R7WlRkBurDRykL0Q2RFsFDeE3ayMusIA7zPL-ypZ55bRCKNwwU0uI1Z2smdvHtmDVfpm0eppYMP6bd4QV5J1XUOqMC9LD1Pktv4XDsTlvre4CYMjPfwubs=w600-h180-no)
+
 ## Docs
 
-The following snippets show how you can use this library, check out the [exaples](./examples) for more information:
+The following snippets show how you can use this library, check out the [examples](./examples) for more information:
 
 ### Plugin snippet demo
 

@@ -12,6 +12,9 @@
         "msgpack-d": "1.0.0-beta.7",
         "vibe-core": "1.4.6"
     },
+    "buildRequirements": ["allowWarnings"],
+    "targetPath": "bin",
+    "dflags-ldc": ["-disable-linker-strip-dead","-link-defaultlib-shared=false"],
     "configurations": [
         {
             "name": "nvimhostlib",
