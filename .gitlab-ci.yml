@@ -1,28 +1,38 @@
-image: python:3.6
+variables:
+  NVIMHOST_LOG_FILE: "/tmp/nvimhost_log.txt"
 
 stages:
 - build
 - test
 
-# python is mainly used for api gen bindings and system tests
-before_script:
-- curl -O https://bootstrap.pypa.io/get-pip.py
-- python get-pip.py
-- pip install -r requirements-dev.txt
-
 ldc-build:
   image: dlang2/ldc-ubuntu:1.13.0
   stage: build
   script:
-    - dub build --build=release --compiler=ldc
+    - ldc2 --version
+    - dub build --build=release --compiler=ldc2 --arch=x86_64
+    - dub build --build=release --compiler=ldc2 --arch=x86_64 --config=demoaltfile
+    - dub build --build=release --compiler=ldc2 --arch=x86_64 --config=demoplugin
+    - dub build --build=release --compiler=ldc2 --arch=x86_64 --config=nvimclient
+    - cp ./bin/altfile-plugin /usr/local/bin
+    - cp ./bin/demo-plugin /usr/local/bin
+    - which altfile-plugin
 
 dmd-build:
   image: dlang2/dmd-ubuntu:2.084.0
   stage: build
   script:
-    - dub build --build=release
+    - dmd --version
+    - dub build --build=release --arch=x86_64
+    - dub build --build=release --compiler=dmd --arch=x86_64 --config=demoaltfile
+    - dub build --build=release --compiler=dmd --arch=x86_64 --config=demoplugin
+    - dub build --build=release --compiler=dmd --arch=x86_64 --config=nvimclient
 
+# add nvim image with python 3.6
+# python is mainly used for api gen bindings and system tests
 # python36:
 #   image: python:3.6
 #   stage: test
+#   before_script:
+#   - pip install -r requirements-dev.txt
 #   script: pytest -s -vv tests/unit
