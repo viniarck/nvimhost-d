@@ -1,3 +1,5 @@
+![pipeline status](https://gitlab.com/viniarck/nvimhost-d/badges/master/pipeline.svg)
+
 ## nvimhost-d
 
 Neovim (nvim) host plugin provider and API client library in [D](https://www.dlang.org).
