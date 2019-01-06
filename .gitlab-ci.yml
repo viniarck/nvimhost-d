@@ -36,7 +36,8 @@ ldc-system-tests:
     - cp ./bin/nvim-client /usr/local/bin
     - which demo-plugin
     - pip3 install -r requirements-dev.txt
-    - python3 -m pytest -s -vv system_tests/ --tb=short
+    - python3 -m pytest -s -vv system_tests/test_demo_plugin_bootstrap.py --tb=short
+    - python3 -m pytest -s -vv system_tests/test_demo_plugin_functions.py --tb=short
 
 ## dmd compiler
 
