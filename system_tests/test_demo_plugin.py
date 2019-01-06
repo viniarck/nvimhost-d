@@ -5,6 +5,7 @@ import subprocess
 import pytest
 import os
 import time
+import pynvim
 
 # mock nvim in a new address in cas you're already running in your machine
 nvim_test_addr = "/tmp/nvim_test_addr"
@@ -64,7 +65,10 @@ def spawn_nvim():
 
 class TestDemoPluginBootstrap(object):
 
-    """TestDemoPlugin. """
+    """TestDemoPlugin.
+    This test suite forces the bootstrap of the plugin
+    by directly calling the plugin binary.
+    """
 
     def test_is_running(self, spawn_demoplugin):
         pid = spawn_demoplugin
@@ -99,3 +103,56 @@ class TestDemoPluginBootstrap(object):
         os.remove(f_log)
         assert not os.path.exists(f_log)
         assert not out
+
+
+@pytest.fixture(scope="session")
+def get_nvim():
+    pass
+    nvim_addr = os.environ.get("NVIM_LISTEN_ADDRESS")
+    assert nvim_addr
+    nvim = pynvim.attach("socket", path=nvim_addr)
+    assert nvim
+    return nvim
+
+
+class TestDemoPluginFunctions(object):
+
+    """
+    TestDemoPluginFunctions.
+    This test suite tests all demo-plugin funtions without forcing any
+    bootstrap mechanism, by leveraging pynvim official
+    client (since it's super stable).
+    """
+
+    def test_greet(self, get_nvim):
+        """Test demo-plugin Greet function."""
+        nvim = get_nvim
+        res = nvim.command_output("echo Greet('D')")
+        assert res == "Hello D"
+
+    def test_greet_wrong_args(self, get_nvim):
+        """Test demo-plugin Greet function."""
+        nvim = get_nvim
+        with pytest.raises(pynvim.api.nvim.NvimError) as exc:
+            nvim.command_output("echo Greet(1)")
+            assert "Wrong function argument types" in str(exc.value)
+
+    def test_sum_begin_to_end(self, get_nvim):
+        """Test demo-plugin SumBeginToEnd function."""
+        nvim = get_nvim
+        res = nvim.command_output("echo SumBeginToEnd(0, 10)")
+        assert res == str(sum(range(0, 10)))
+
+    def test_set_var_value_sync(self, get_nvim):
+        """Test demo-plugin SetVarValueSync function."""
+        nvim = get_nvim
+        nvim.command("call SetVarValueSync(555)")
+        res = nvim.command_output("echo g:test_var_value")
+        assert res == "555"
+
+    def test_set_var_value_async(self, get_nvim):
+        """Test demo-plugin SetVarValueAsync function."""
+        nvim = get_nvim
+        nvim.command("call SetVarValueAsync(56)")
+        res = nvim.command_output("echo g:testasync_var_value")
+        assert res == "56"
