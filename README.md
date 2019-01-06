@@ -1,4 +1,4 @@
-![pipeline status](https://gitlab.com/viniarck/nvimhost-d/badges/master/pipeline.svg)
+[![pipeline status](https://gitlab.com/viniarck/nvimhost-d/badges/master/pipeline.svg)]
 [![DUB Package](https://img.shields.io/dub/v/nvimhost.svg)](https://code.dlang.org/packages/nvimhost)
 
 ## nvimhost-d
