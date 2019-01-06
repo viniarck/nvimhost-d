@@ -77,6 +77,11 @@ class TestDemoPluginBootstrap(object):
         assert os.path.exists(f_log)
         assert pid
 
+    def test_manifest_exists(self, spawn_demoplugin):
+        """Make sure the plugin is generating the manifest vim file."""
+        manifest_file = "~/.config/nvim/settings/demo-plugin.vim"
+        assert os.path.exists(os.path.expanduser(manifest_file))
+
     def test_started(self, spawn_demoplugin):
         """Check if the plugin properly started."""
         f_log = os.environ.get("NVIMHOST_LOG_FILE")
@@ -107,7 +112,7 @@ class TestDemoPluginBootstrap(object):
 
 @pytest.fixture(scope="session")
 def get_nvim():
-    pass
+
     nvim_addr = os.environ.get("NVIM_LISTEN_ADDRESS")
     assert nvim_addr
     nvim = pynvim.attach("socket", path=nvim_addr)
@@ -119,9 +124,8 @@ class TestDemoPluginFunctions(object):
 
     """
     TestDemoPluginFunctions.
-    This test suite tests all demo-plugin funtions without forcing any
-    bootstrap mechanism, by leveraging pynvim official
-    client (since it's super stable).
+    This test suite tests all demo-plugin funtions by leveraging pynvim
+    official client (since it's super stable).
     """
 
     def test_greet(self, get_nvim):
