@@ -1,4 +1,5 @@
 ![pipeline status](https://gitlab.com/viniarck/nvimhost-d/badges/master/pipeline.svg)
+[![DUB Package](https://img.shields.io/dub/v/nvimhost.svg)](https://code.dlang.org/packages/nvimhost)
 
 ## nvimhost-d
 
@@ -104,6 +105,8 @@ dub build --build=release
 ```
 
 ## Testing
+
+Both unit tests and system tests (end-to-end) testing with nvim have been automated in the CI.
 
 ### Unit tests
 

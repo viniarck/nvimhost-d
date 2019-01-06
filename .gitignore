@@ -1,3 +1,4 @@
+bin/
 .dub
 docs.json
 __dummy.html
@@ -6,6 +7,5 @@ docs/
 *.o
 *.obj
 *.lst
-demo-plugin
-nvimd-client
 libnvimhost.a
+nvimhost-test*
