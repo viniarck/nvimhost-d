@@ -13,7 +13,6 @@
         "vibe-core": "1.4.6"
     },
     "buildRequirements": ["allowWarnings"],
-    "targetPath": "bin",
     "dflags-ldc": ["-disable-linker-strip-dead","-link-defaultlib-shared=false"],
     "configurations": [
         {
@@ -25,18 +24,21 @@
             "name": "nvimclient",
             "targetType": "executable",
             "mainSourceFile": "examples/nvim_client.d",
+            "targetPath": "bin",
             "targetName": "nvimd-client"
         },
         {
             "name": "demoplugin",
             "targetType": "executable",
             "mainSourceFile": "examples/demo_plugin.d",
+            "targetPath": "bin",
             "targetName": "demo-plugin"
         },
         {
             "name": "demoaltfile",
             "targetType": "executable",
             "mainSourceFile": "examples/altfile_plugin.d",
+            "targetPath": "bin",
             "targetName": "altfile-plugin"
         }
     ]
