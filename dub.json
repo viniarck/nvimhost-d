@@ -25,7 +25,7 @@
             "targetType": "executable",
             "mainSourceFile": "examples/nvim_client.d",
             "targetPath": "bin",
-            "targetName": "nvimd-client"
+            "targetName": "nvim-client"
         },
         {
             "name": "demoplugin",
