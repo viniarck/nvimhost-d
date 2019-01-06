@@ -107,15 +107,3 @@ dub build --build=release
 ## Testing
 
 Both unit tests and system tests (end-to-end) testing with nvim have been automated in the CI.
-
-### Unit tests
-
-```
-dub test
-```
-
-### System tests
-
-```
-python -m pytest system_tests
-```

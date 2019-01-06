@@ -35,6 +35,10 @@ ldc-system-tests:
     - cp ./bin/demo-plugin /usr/local/bin
     - cp ./bin/nvim-client /usr/local/bin
     - which demo-plugin
+    - pip3 install -r requirements-dev.txt
+    - python3 -m pytest -s -vv system_tests/ --tb=short
+
+## dmd compiler
 
 dmd-build:
   image: dlang2/dmd-ubuntu:2.084.0
@@ -46,11 +50,8 @@ dmd-build:
     - dub build --build=release --compiler=dmd --arch=x86_64 --config=demoplugin
     - dub build --build=release --compiler=dmd --arch=x86_64 --config=nvimclient
 
-# python is mainly used for api gen bindings and system tests
-# nvim-python:
-#   image: registry.gitlab.com/viniarck/nvimhost-d/nvim:0.2.2
-#   stage: test
-#   before_script:
-#     - pip3 install -r requirements-dev.txt
-#   script:
-#     - pytest -s -vv system_tests
+dmd-unit-tests:
+  image: dlang2/dmd-ubuntu:2.084.0
+  stage: test
+  script:
+    - dub test --build=release --arch=x86_64
