@@ -1,5 +1,6 @@
 variables:
   NVIMHOST_LOG_FILE: "/tmp/nvimhost_log.txt"
+  NVIM_LISTEN_ADDRESS: "/tmp/nvim_test_addr"
 
 stages:
 - build
