@@ -5,8 +5,10 @@ stages:
 - build
 - test
 
+# ./Dockerfile.nvim, inherents from dlang2/ldc-ubuntu:1.13.0
+image: registry.gitlab.com/viniarck/nvimhost-d/ldc-ubuntu:1.13.0
+
 ldc-build:
-  image: dlang2/ldc-ubuntu:1.13.0
   stage: build
   script:
     - ldc2 --version
@@ -14,9 +16,25 @@ ldc-build:
     - dub build --build=release --compiler=ldc2 --arch=x86_64 --config=demoaltfile
     - dub build --build=release --compiler=ldc2 --arch=x86_64 --config=demoplugin
     - dub build --build=release --compiler=ldc2 --arch=x86_64 --config=nvimclient
+    - cp ./bin/demo-plugin /usr/local/bin
+    - which demo-plugin
+  artifacts:
+    paths:
+     - ./bin
+
+ldc-unit-tests:
+  stage: test
+  script:
+    - dub test --build=release --compiler=ldc2 --arch=x86_64
+
+ldc-system-tests:
+  stage: test
+  script:
+    - nvim --version
     - cp ./bin/altfile-plugin /usr/local/bin
     - cp ./bin/demo-plugin /usr/local/bin
-    - which altfile-plugin
+    - cp ./bin/nvim-client /usr/local/bin
+    - which demo-plugin
 
 dmd-build:
   image: dlang2/dmd-ubuntu:2.084.0
@@ -29,9 +47,10 @@ dmd-build:
     - dub build --build=release --compiler=dmd --arch=x86_64 --config=nvimclient
 
 # python is mainly used for api gen bindings and system tests
-nvim-python:
-  image: registry.gitlab.com/viniarck/nvimhost-d/nvim:0.2.2
-  stage: test
-  before_script:
-  - pip3 install -r requirements-dev.txt
-  # script: pytest -s -vv system_tests
+# nvim-python:
+#   image: registry.gitlab.com/viniarck/nvimhost-d/nvim:0.2.2
+#   stage: test
+#   before_script:
+#     - pip3 install -r requirements-dev.txt
+#   script:
+#     - pytest -s -vv system_tests
