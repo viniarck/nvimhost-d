@@ -28,6 +28,13 @@ class TestDemoPluginFunctions(object):
             nvim.command_output("echo Greet(1)")
             assert "Wrong function argument types" in str(exc.value)
 
+    def test_greet_extra_args(self, get_nvim):
+        """Test demo-plugin Greet function."""
+        nvim = get_nvim
+        with pytest.raises(pynvim.api.nvim.NvimError) as exc:
+            nvim.command_output("echo Greet('D', 2)")
+            assert "Wrong number" in str(exc.value)
+
     def test_sum_begin_to_end(self, get_nvim):
         """Test demo-plugin SumBeginToEnd function."""
         nvim = get_nvim

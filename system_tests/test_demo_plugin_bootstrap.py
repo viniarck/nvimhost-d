@@ -84,5 +84,3 @@ class TestDemoPluginBootstrap(object):
         os.remove(f_log)
         assert not os.path.exists(f_log)
         assert not out
-
-
