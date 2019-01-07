@@ -19,17 +19,29 @@ ldc-build:
     - dub build --build=release --compiler=ldc2 --arch=x86_64 --config=nvimclient
     - cp ./bin/demo-plugin /usr/local/bin
     - which demo-plugin
+  only:
+    changes:
+      - source/**
+      - system_tests/**
   artifacts:
     paths:
      - ./bin
 
 ldc-unit-tests:
   stage: test
+  only:
+    changes:
+      - source/**
+      - system_tests/**
   script:
     - dub test --build=release --compiler=ldc2 --arch=x86_64
 
 ldc-system-tests:
   stage: test
+  only:
+    changes:
+      - source/**
+      - system_tests/**
   script:
     - nvim --version
     - cp ./bin/altfile-plugin /usr/local/bin
@@ -45,6 +57,10 @@ ldc-system-tests:
 dmd-build:
   image: dlang2/dmd-ubuntu:2.084.0
   stage: build
+  only:
+    changes:
+      - source/**
+      - system_tests/**
   script:
     - dmd --version
     - dub build --build=release --arch=x86_64
@@ -55,5 +71,9 @@ dmd-build:
 dmd-unit-tests:
   image: dlang2/dmd-ubuntu:2.084.0
   stage: test
+  only:
+    changes:
+      - source/**
+      - system_tests/**
   script:
     - dub test --build=release --arch=x86_64
