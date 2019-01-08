@@ -21,7 +21,7 @@ ldc-build:
     - which demo-plugin
   only:
     changes:
-      - source/**
+      - source/**/*
       - system_tests/**
   artifacts:
     paths:
@@ -31,7 +31,7 @@ ldc-unit-tests:
   stage: test
   only:
     changes:
-      - source/**
+      - source/**/*
       - system_tests/**
   script:
     - dub test --build=release --compiler=ldc2 --arch=x86_64
@@ -40,7 +40,7 @@ ldc-system-tests:
   stage: test
   only:
     changes:
-      - source/**
+      - source/**/*
       - system_tests/**
   script:
     - nvim --version
@@ -59,7 +59,7 @@ dmd-build:
   stage: build
   only:
     changes:
-      - source/**
+      - source/**/*
       - system_tests/**
   script:
     - dmd --version
@@ -73,7 +73,7 @@ dmd-unit-tests:
   stage: test
   only:
     changes:
-      - source/**
+      - source/**/*
       - system_tests/**
   script:
     - dub test --build=release --arch=x86_64
