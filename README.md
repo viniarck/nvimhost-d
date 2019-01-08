@@ -115,6 +115,29 @@ dub build --build=release
 
 For more information about building binaries, check out the [.gitlab-ci.yml file](./.gitlab-ci.yml)
 
+## How to ship plugin binaries
+
+Either:
+
+- Your users compile the binary using `ldc2`/`dmd` or
+- You pre-compile dynamically linked binaries for the platforms you want to target.
+
+Based on the current build settings, the dynamic linked binary will depend on common C libraries such as `libc.so.6`, `libpthread.so.0`, and a few others, which are expected to be present on most Unix distributions, so it should run without any issues.
+
+## Trying out linux x86_64 compiled binaries
+
+If you want to try out the `demo-plugin`, I've pre-compiled the binary for linux x86_64:
+
+- `curl -LO https://github.com/viniarck/nvimhost-d/releases/download/v1.1.1/demo-plugin`
+- `chmod +x demo-plugin`
+- `sudo mv demo-plugin /usr/local/bin` (or somewhere else in your PATH)
+- `demo-plugin` (execute the plugin once in your shell to generate the manifest)
+- In your ~/.config/nvim/init.vim file, `source ~/.config/nvim/settings/demo-plugin.vim`
+
+From this point forward, all plugin functions will be available to be called from `nvim`
+
+- Launch `nvim` and call native D functions from this plugin, for example, `:call Greet("D")`
+
 ## Testing
 
 Both unit tests and system tests (end-to-end) testing with nvim have been automated in the CI.
