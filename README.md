@@ -13,6 +13,11 @@ The following snippets show how you can use this library, check out the [example
 
 ![screencast](https://s2.gifyu.com/images/nvimhostd.gif)
 
+## Goals
+
+- Provide a library for high-performance plugins (it takes between 2-4ms on average via msgpack RPC to call a function).
+- Provide an API for other projects to integrate with nvim.
+
 ### Plugin snippet demo
 
 ```D
