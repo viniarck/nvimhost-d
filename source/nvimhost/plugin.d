@@ -29,7 +29,6 @@ exclusively used for exchanging call messages between the Plugin functions, comm
 struct NvimPlugin(Struct) {
     import nvimhost.client;
     import nvimhost.api;
-    import std.stdio;
     import std.traits;
     import std.meta : ApplyLeft, Filter;
     import std.variant;
@@ -42,8 +41,9 @@ struct NvimPlugin(Struct) {
     import std.uni : toLower;
     import vibe.core.net;
     import eventcore.driver : IOMode;
-    import nvimhost.util;
+    import nvimhost.util : genSrcAddr;
     import std.path;
+    import std.file;
 
 public:
     // Encapsulate Nvim API to facilitate for final consumers of this Class.
@@ -92,7 +92,6 @@ private:
     */
     void cbThread() {
         import msgpack;
-        import std.file;
         import std.uuid;
 
         srcAddr = genSrcAddr();
@@ -287,8 +286,6 @@ private:
 
     void ensureDirCreated(string filePath) {
         import std.range;
-        import std.file;
-        import std.path;
 
         auto folderPath = filePath.expandTilde.split(dirSeparator)[0 .. $ - 1];
         mkdirRecurse(folderPath.join(dirSeparator));
@@ -299,28 +296,39 @@ public:
     this(string pluginBinPath, string outManifestFilePath) {
         c = nvim.getClient();
         c.enableLog();
-        c.connect();
-        stc = Struct(nvim);
 
         ensureDirCreated(outManifestFilePath);
         genManifest!Struct(pluginBinPath, expandTilde(outManifestFilePath));
 
-        mTid = thisTid;
-        auto tcb = new Thread(&cbThread);
-        tcb.isDaemon(true);
-        tcb.start();
+        try {
+            c.connect();
+            stc = Struct(nvim);
 
-        trace(c.logEnabled, "Waiting for cbThread message");
-        receiveOnly!string();
-        trace(c.logEnabled, "Received cbThread message");
+            mTid = thisTid;
+            auto tcb = new Thread(&cbThread);
+            tcb.isDaemon(true);
+            tcb.start();
 
-        immutable string loadedName = Struct.stringof.toLower;
-        logf(c.logEnabled, "Setting g:" ~ loadedName ~ "_channel" ~ "=" ~ to!string(chId));
-        c.call!(void)("nvim_command", "let g:" ~ loadedName ~ "_channel" ~ "=" ~ to!string(chId));
-        trace(c.logEnabled, "Plugin " ~ loadedName ~ " is ready!");
+            trace(c.logEnabled, "Waiting for cbThread message");
+            receiveOnly!string();
+            trace(c.logEnabled, "Received cbThread message");
+
+            immutable string loadedName = Struct.stringof.toLower;
+            logf(c.logEnabled, "Setting g:" ~ loadedName ~ "_channel" ~ "=" ~ to!string(chId));
+            c.call!(void)("nvim_command", "let g:" ~ loadedName ~ "_channel" ~ "=" ~ to!string(chId));
+            trace(c.logEnabled, "Plugin " ~ loadedName ~ " is ready!");
+        } catch(NvimListenAddressException e) {
+            import std.stdio : writeln;
+            import core.stdc.stdlib;
+
+            writeln(e.msg);
+            error(c.logEnabled, e.msg);
+            writeln("The manifest file has been written to " ~ expandTilde(outManifestFilePath));
+            exit(1);
+        }
     }
 
-    ~this(){
+    ~this() {
         close();
     }
 
@@ -342,7 +350,7 @@ public:
     You should only call keepRunning if you don't have an inifinite loop in your void main(), for example:
 
     void main(){
-        auto p = new NvimPlugin!MyPluginClassHere;
+        auto p = new NvimPlugin!(PluginStruct)();
         scope(exit) p.keepRunning();
     }
     */
@@ -363,9 +371,6 @@ public:
     void genManifest(Struct)(string binExecutable, string outputFile, string autoCmdPattern = "*") {
         import std.stdio : writeln, File;
         import std.string : format;
-        import std.uni : toLower;
-        import std.file;
-        import std.path;
 
         immutable string loadedName = Struct.stringof.toLower;
         // 1 -> loadedName

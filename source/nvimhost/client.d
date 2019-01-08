@@ -61,7 +61,6 @@ struct MethodInfo {
 }
 
 struct NvimClient {
-    import std.stdio;
     import std.socket;
     import std.process : environment;
     import std.typecons;
@@ -71,7 +70,7 @@ struct NvimClient {
     import std.experimental.logger;
     import vibe.core.net;
     import eventcore.driver : IOMode;
-    import nvimhost.util;
+    import nvimhost.util : genSrcAddr;
 
 public:
     string nvimAddr;
@@ -382,16 +381,18 @@ public:
     }
 
     /**
-    Open an async TCP connection handler to Nvim using UnixAddress
+    Open an async TCP connection handler to Nvim using UnixAddress.
+
+    If NVIM_LISTEN_ADDRESS environment variable is not set throws
+    NvimListenAddressException.
+
     */
     void connect() {
         import std.path;
-        import std.conv;
-        import std.uuid;
-        import std.file;
+
         this.nvimAddr = environment.get("NVIM_LISTEN_ADDRESS", "");
         if (nvimAddr == "") {
-            throw new Exception("Couldn't get NVIM_LISTEN_ADDRESS, is nvim running?");
+            throw new NvimListenAddressException("Couldn't get NVIM_LISTEN_ADDRESS, is nvim running?");
         }
 
         auto unixAddr = new UnixAddress(nvimAddr);
@@ -401,5 +402,11 @@ public:
         conn = connectTCP(netAddr, netSrcAddr);
         conn.keepAlive(true);
         tracef(logEnabled, "Main thread connected to nvim");
+    }
+}
+
+class NvimListenAddressException : Exception {
+    this(string msg, string file = __FILE__, size_t line = __LINE__) {
+        super(msg, file, line);
     }
 }
