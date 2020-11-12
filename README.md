@@ -11,7 +11,7 @@ Neovim (nvim) host plugin provider and API client library in [D](https://www.dla
 
 The following snippets show how you can use this library, check out the [examples](./examples) for more information. This GIF shows the `demo-plugin` below in action:
 
-![screencast](https://s2.gifyu.com/images/nvimhostd.gif)
+![screencast](https://s8.gifyu.com/images/nvimhostd97b2cfe96c3f9f1a.gif)
 
 ## Goals
 
